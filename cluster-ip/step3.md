@@ -6,5 +6,5 @@ Let's spin up an interactive Pod that we can use to test requests to reach our S
 Within the pod, we can make a request to our previously created ClusterIP service. Like so:
 `curl http://my-nginx`{{execute}}
 
-You should get a similar response back:
+The output is similar to:
 `TODO: add expected response here`
