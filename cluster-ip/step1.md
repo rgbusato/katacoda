@@ -5,9 +5,9 @@ First we must deploy our Application. We will use a Deployment that will ensure 
 
 <pre class="file" data-filename="deployment.yaml" data-target="clipboard">---
 apiVersion: v1
-kind: Service
+kind: Deployment
 metadata:
-  name: my-internal-service
+  name: my-deployment
 spec:
   selector:
     app: my-app
@@ -20,5 +20,8 @@ spec:
 </pre>
 
 `kubectl apply -f ./deployment.yaml`{{execute}}
+
+List Kubernetes Deployments in the cluster:
+`kubectl get deployments`{{execute}}
 
 

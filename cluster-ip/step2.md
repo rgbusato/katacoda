@@ -17,3 +17,7 @@ spec:
     targetPort: 80
     protocol: TCP
 </pre>
+
+
+List all services deployed in the cluster:
+`kubectl get services`{{execute}}

@@ -1,1 +1,2 @@
-[ -d ./deployment.yaml ] && echo "done"
+kubectl get deployment
+# [ -d ./deployment.yaml ] && echo "done"
