@@ -1,0 +1,1 @@
+[ -d ./deployment.yaml ] && echo "done"
