@@ -1,10 +1,8 @@
 NOTE: Maybe this should be the editor + terminal layout so we can create the custom service definition.
 
-Let's create our service of type `ClusterIP`:
+Let's create our service of type `ClusterIP`: 
 
-```
-service/networking/nginx-svc.yaml 
-
+<pre class="file" data-filename="my-svc.yaml" data-target="replace">---
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,4 +16,3 @@ spec:
     port: 80
     targetPort: 80
     protocol: TCP
-```
