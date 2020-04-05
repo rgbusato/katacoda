@@ -3,24 +3,27 @@
 By default, the Pod is only accessible by its internal IP address within the Kubernetes cluster. To make the hello-node Container accessible from outside the Kubernetes virtual network, you have to expose the Pod as a Kubernetes Service.
 
 1. Expose the Pod to the public internet using the kubectl expose command:
-`kubectl expose deployment hello-node --type=LoadBalancer --port=8080`{{execute}}
 
-The `--type=LoadBalancer` flag indicates that you want to expose your Service outside of the cluster.
+    `kubectl expose deployment hello-node --type=LoadBalancer --port=8080`{{execute}}
+
+    The `--type=LoadBalancer` flag indicates that you want to expose your Service outside of the cluster.
 
 2. View the Service you just created:
-`kubectl get services`{{execute}}
 
-The output is similar to:
-```
-NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-hello-node   LoadBalancer   10.108.144.78   <pending>     8080:30369/TCP   21s
-kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          23m
-```
+    `kubectl get services`{{execute}}
 
-On cloud providers that support load balancers, an external IP address would be provisioned to access the Service. On Minikube, the LoadBalancer type makes the Service accessible through the minikube service command.
+    The output is similar to:
+    ```
+    NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+    hello-node   LoadBalancer   10.108.144.78   <pending>     8080:30369/TCP   21s
+    kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          23m
+    ```
+
+    > **Note:** On cloud providers that support load balancers, an external IP address would be provisioned to access the Service. On Minikube, the LoadBalancer type makes the Service accessible through the minikube service command.
 
 3. Run the following command:
-`minikube service hello-node`{{execute}}
+
+    `minikube service hello-node`{{execute}}
 
 4. Katacoda environment only: Click the plus sign, and then click Select port to view on Host 1
 
