@@ -1,15 +1,16 @@
 Here is how we can internally reach to our service.
 
-Let's spin up an interactive Pod that we can use to test requests to reach our Service:
+1. Let's spin up an interactive Pod that we can use to test requests to reach our Service:
 `kubectl run my-shell --rm -i --tty --image ubuntu -- bash`{{execute}}
 
-Once the bash prompt within the pod is available, first we must install curl:
+2. Once the bash prompt within the pod is available, first we must install curl:
 ```
 apt-get update
 apt-get install curl
 ```{{execute}}
 
-Within the pod, we can make a request to our previously created ClusterIP service. Like so:
+3. Within the pod, we can make a request to our previously created ClusterIP service. 
+Like so:
 `curl http://my-nginx`{{execute}}
 
 You should get something like:
@@ -30,5 +31,3 @@ You should get something like:
 working. Further configuration is required.</p>
 ...
 ```
-
-> **Note:** We were able to deploy an application and expose to other services within the cluster via a Service of type `ClusterIP`.
