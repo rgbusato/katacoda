@@ -29,3 +29,6 @@ This Service specification above will create a Service which targets TCP port 80
 
 List all services deployed in the cluster:
 `kubectl get services`{{execute}}
+
+To see our specific service:
+`kubectl get svc my-nginx`
