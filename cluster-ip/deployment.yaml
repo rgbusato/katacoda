@@ -9,12 +9,12 @@ spec:
         run: my-nginx
     replicas: 2
     template:
-    metadata:
-        labels:
-        run: my-nginx
-    spec:
-        containers:
-        - name: my-nginx
-        image: nginx
-        ports:
-        - containerPort: 80
+        metadata:
+            labels:
+            run: my-nginx
+        spec:
+            containers:
+            - name: my-nginx
+              image: nginx
+              ports:
+                - containerPort: 80

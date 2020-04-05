@@ -20,10 +20,3 @@ The output is similar to:
 NAME                          READY     STATUS    RESTARTS   AGE
 hello-node-5f76cf6ccf-br9b5   1/1       Running   0          1m
 ```
-
-4. View cluster events: (DELETE)
-`kubectl get events`{{execute}}
-
-5. View the `kubectl` configuration: (DELETE)
-`kubectl config view`{{execute}}
-
