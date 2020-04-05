@@ -2,14 +2,17 @@
 
 Let's create our service of type `ClusterIP`: 
 
-<pre class="file" data-filename="my-svc.yaml" data-target="replace">---
+<pre class="file" data-filename="service.yaml" data-target="replace">
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-internal-service
+  name: my-nginx
+  labels:
+    run: my-nginx
 spec:
   selector:
-    app: my-app
+    run: my-nginx
   type: ClusterIP
   ports:
   - name: http
@@ -17,6 +20,11 @@ spec:
     targetPort: 80
     protocol: TCP
 </pre>
+
+Now lets create out service:
+`kubectl apply -f ./service.yaml`{{execute}}
+
+This Service specification above will create a Service which targets TCP port 80 on any Pod with the `run: my-nginx` label, and expose it on an abstracted Service port (targetPort: is the port the container accepts traffic on, port: is the abstracted Service port, which can be any port other pods use to access the Service). View Service API object to see the list of supported fields in service definition. Check your Service:
 
 
 List all services deployed in the cluster:
