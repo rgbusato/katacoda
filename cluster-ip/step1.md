@@ -3,8 +3,7 @@
 
 First we must deploy our Application. We will use a Deployment that will ensure that at least 2 application pods are running.
 
-<pre class="file" data-filename="deployment.yaml" data-target="clipboard">
----
+<pre class="file" data-filename="deployment.yaml" data-target="replace">---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

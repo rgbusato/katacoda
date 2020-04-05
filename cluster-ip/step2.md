@@ -31,4 +31,4 @@ List all services deployed in the cluster:
 `kubectl get services`{{execute}}
 
 To see our specific service:
-`kubectl get svc my-nginx`
+`kubectl get svc my-nginx`{{execute}}
