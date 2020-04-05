@@ -5,6 +5,7 @@
 
 2. View the Deployment:
 `kubectl get deployments`{{execute}}
+
 The output is similar to:
 ```
 NAME         READY   UP-TO-DATE   AVAILABLE   AGE
@@ -13,6 +14,7 @@ hello-node   1/1     1            1           1m
 
 3. View the Pod:
 `kubectl get pods`{{execute}}
+
 The output is similar to:
 ```
 NAME                          READY     STATUS    RESTARTS   AGE
