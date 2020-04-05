@@ -1,0 +1,1 @@
+In this scenario we will deploy an app and expose it within our cluster with a service of type `ClusterIP`.
