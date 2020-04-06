@@ -5,6 +5,9 @@ Let's create our service of type `ClusterIP`:
 **TODO:** Fix file and create file automatically?
 
 1. Create a file named `service.yaml` with the following content:
+    
+    `touch service.yaml`{{execute}}
+
     <pre class="file" data-filename="service.yaml" data-target="replace">---
     apiVersion: v1
     kind: Service
