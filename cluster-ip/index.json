@@ -29,13 +29,13 @@
     "assets": {
       "client": [
         {
-          "file": "service.yml",
+          "file": "service.yaml",
           "target": "~/"
         }
       ],
       "host01": [
         {
-          "file": "service.yml",
+          "file": "service.yaml",
           "target": "~/"
         }
       ]
