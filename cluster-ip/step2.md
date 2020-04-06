@@ -2,6 +2,8 @@
 
 Let's create our service of type `ClusterIP`: 
 
+**TODO:** Fix file and create file automatically?
+
 1. Create a file named `service.yaml` with the following content:
     <pre class="file" data-filename="service.yaml" data-target="replace">---
     apiVersion: v1
@@ -11,14 +13,14 @@ Let's create our service of type `ClusterIP`:
     labels:
         run: my-nginx
     spec:
-    selector:
-        run: my-nginx
-    type: ClusterIP
-    ports:
-    - name: http
-        port: 80
-        targetPort: 80
-        protocol: TCP
+        selector:
+            run: my-nginx
+        type: ClusterIP
+        ports:
+        - name: http
+          port: 80
+          targetPort: 80
+          protocol: TCP
     </pre>
 
 2. Now let's create our service:

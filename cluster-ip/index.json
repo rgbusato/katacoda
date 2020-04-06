@@ -25,6 +25,20 @@
     },
     "finish": {
       "text": "finish.md"
+    },
+    "assets": {
+      "client": [
+        {
+          "file": "service.yml",
+          "target": "~/"
+        }
+      ],
+      "host01": [
+        {
+          "file": "service.yml",
+          "target": "~/"
+        }
+      ]
     }
   },
   "environment": {
