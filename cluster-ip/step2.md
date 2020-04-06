@@ -12,17 +12,16 @@ Let's create our service of type `ClusterIP`:
     apiVersion: v1
     kind: Service
     metadata:
-    name: my-nginx
-    labels:
-        run: my-nginx
+        name: my-nginx
+        labels:
+            run: my-nginx
     spec:
         selector:
             run: my-nginx
         type: ClusterIP
         ports:
         - name: http
-          port: 80
-          targetPort: 80
+          port: 8080
           protocol: TCP
     </pre>
 
