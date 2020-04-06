@@ -27,12 +27,6 @@
       "text": "finish.md"
     },
     "assets": {
-      "client": [
-        {
-          "file": "service.yaml",
-          "target": "~/"
-        }
-      ],
       "host01": [
         {
           "file": "service.yaml",
