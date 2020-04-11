@@ -11,13 +11,16 @@
     > **Note:** This can take up to a minute.
 
     Output:
-    
+
     ```
-    NAME                                        READY     STATUS    RESTARTS   AGE
-    default-http-backend-59868b7dd6-xb8tq       1/1       Running   0          1m
-    kube-addon-manager-minikube                 1/1       Running   0          3m
-    kube-dns-6dcb57bcc8-n4xd4                   3/3       Running   0          2m
-    kubernetes-dashboard-5498ccf677-b8p5h       1/1       Running   0          2m
-    nginx-ingress-controller-5984b97644-rnkrg   1/1       Running   0          1m
-    storage-provisioner                         1/1       Running   0          2m
+    NAME                                        READY   STATUS    RESTARTS   AGE
+    coredns-6955765f44-4phmx                    1/1     Running   0          37s
+    coredns-6955765f44-j8z5z                    1/1     Running   0          37s
+    etcd-minikube                               1/1     Running   0          39s
+    kube-apiserver-minikube                     1/1     Running   0          39s
+    kube-controller-manager-minikube            1/1     Running   0          39s
+    kube-proxy-sqj72                            1/1     Running   0          37s
+    kube-scheduler-minikube                     1/1     Running   0          39s
+    nginx-ingress-controller-6fc5bcc8c9-4n8z6   0/1     Running   0          37s
+    storage-provisioner                         1/1     Running   0          41s
     ```
