@@ -13,12 +13,12 @@ metadata:
 spec:
     rules:
     - host: hello-world.info
-    http:
+      http:
         paths:
         - path: /
-            backend:
-                serviceName: web
-                servicePort: 8080
+          backend:
+            serviceName: web
+            servicePort: 8080
 ```{{copy}}
 
 2. Create the Ingress resource by running the following command:
@@ -44,7 +44,9 @@ spec:
 
     > **Note:** If you are running Minikube locally, use minikube ip to get the external IP. The IP address displayed within the ingress list will be the internal IP.
 
-    `172.17.0.15 hello-world.info`{{execute}}
+    `172.17.0.15 hello-world.info`
+
+    `echo "172.17.0.15 hello-world.info" >> /etc/hosts`
 
     This sends requests from hello-world.info to Minikube.
 
