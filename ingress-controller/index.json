@@ -33,7 +33,8 @@
     ],
     "intro": {
       "courseData": "env-init.sh",
-      "text": "intro.md"
+      "text": "intro.md",
+      "credits": "https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/"
     },
     "finish": {
       "text": "finish.md"
