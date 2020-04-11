@@ -1,6 +1,6 @@
 # Create a Deployment
 
-1. Use the kubectl create command to create a Deployment that manages a Pod. The Pod runs a Container based on the provided Docker image.
+1. Use the `kubectl create` command to create a Deployment that manages a Pod. The Pod runs a Container based on the provided Docker image.
 
     `kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node`{{execute}}
 

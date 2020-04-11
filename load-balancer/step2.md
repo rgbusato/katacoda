@@ -8,7 +8,7 @@ By default, the Pod is only accessible by its internal IP address within the Kub
 
     The `--type=LoadBalancer` flag indicates that you want to expose your Service outside of the cluster.
 
-2. View the Service you just created:
+2. View the Service you've just created:
 
     `kubectl get services`{{execute}}
 
