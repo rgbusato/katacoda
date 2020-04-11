@@ -1,30 +1,32 @@
 # Create an Ingress resource
 The following file is an Ingress resource that sends traffic to your Service via hello-world.info.
 
-1. Create example-ingress.yaml from the following file:
+1. Create `example-ingress.yaml` from the following file:
 
     ```
     apiVersion: networking.k8s.io/v1beta1 # for versions before 1.14 use extensions/v1beta1
     kind: Ingress
     metadata:
-    name: example-ingress
-    annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /$1
+        name: example-ingress
+        annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /$1
     spec:
-    rules:
-    - host: hello-world.info
-        http:
-        paths:
-        - path: /
-            backend:
-            serviceName: web
-            servicePort: 8080
+        rules:
+        - host: hello-world.info
+          http:
+            paths:
+            - path: /
+                backend:
+                    serviceName: web
+                    servicePort: 8080
     ```
 
 2. Create the Ingress resource by running the following command:
+    
     `kubectl apply -f example-ingress.yaml`{{execute}}
 
     Output:
+
     `ingress.networking.k8s.io/example-ingress created`
 
 3. Verify the IP address is set:
@@ -51,9 +53,11 @@ The following file is an Ingress resource that sends traffic to your Service via
     `curl hello-world.info`{{execute}}
 
     Output:
+
     ```
     Hello, world!
     Version: 1.0.0
     Hostname: web-55b8c6998d-8k564
     ```
+    
     > **Note:** If you are running Minikube locally, you can visit hello-world.info from your browser.

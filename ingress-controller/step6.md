@@ -5,6 +5,7 @@
   `curl hello-world.info`{{execute}}
 
   Output:
+
   ```
   Hello, world!
   Version: 1.0.0
@@ -16,8 +17,11 @@
   `curl hello-world.info/v2`{{execute}}
 
   Output:
+
   ```
   Hello, world!
   Version: 2.0.0
   Hostname: web2-75cd47646f-t8cjk
   ```
+
+  > **Note**: If you are running Minikube locally, you can visit hello-world.info and hello-world.info/v2 from your browser

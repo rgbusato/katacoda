@@ -4,7 +4,7 @@
 
     ```
         - path: /v2/*
-            backend:
+          backend:
             serviceName: web2
             servicePort: 8080
     ```
@@ -14,4 +14,5 @@
     `kubectl apply -f example-ingress.yaml`{{execute}}
 
     Output:
+
     `ingress.extensions/example-ingress configured`

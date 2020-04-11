@@ -11,6 +11,7 @@
     > **Note:** This can take up to a minute.
 
     Output:
+    
     ```
     NAME                                        READY     STATUS    RESTARTS   AGE
     default-http-backend-59868b7dd6-xb8tq       1/1       Running   0          1m
