@@ -14,7 +14,7 @@ By default, the Pod is only accessible by its internal IP address within the Kub
     service/hello-node exposed
     ```
 
-2. View the Service you've just created:
+2. View the Service you just created:
 
     `kubectl get services`{{execute}}
 
@@ -23,7 +23,6 @@ By default, the Pod is only accessible by its internal IP address within the Kub
     ```
     NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
     hello-node   LoadBalancer   10.108.144.78   <pending>     8080:30369/TCP   21s
-    kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          23m
     ```
 
     > **Note:** On cloud providers that support load balancers, an external IP address would be provisioned to access the Service. **On Minikube, the LoadBalancer type makes the Service accessible through the `minikube service` command.**

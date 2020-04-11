@@ -1,4 +1,5 @@
 # Create a Deployment
+
 **A Kubernetes `deployment` is responsible for keeping a set of pods running.**
 
 1. Use the kubectl create command to create a Deployment that manages a Pod. The Pod runs a Container based on the provided Docker image.
