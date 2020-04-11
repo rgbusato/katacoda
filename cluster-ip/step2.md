@@ -27,13 +27,13 @@ Let's create our service of type `ClusterIP`:
     metadata:
         name: hello-node
         labels:
-            run: hello-node
+            app: hello-node
     spec:
         ports:
         - port: 8080
           protocol: TCP
         selector:
-            run: hello-node
+            app: hello-node
 
     ```
 

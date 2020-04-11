@@ -1,8 +1,8 @@
 # Create a Service
 
-By default, the Pod is only accessible by its internal IP address within the Kubernetes cluster. To make the hello-node Container accessible from outside the Kubernetes virtual network, you have to expose the Pod as a Kubernetes Service.
+By default, the Pod is only accessible by its internal IP address within the Kubernetes cluster. To make the `hello-node` Container accessible from outside the Kubernetes virtual network, you have to expose the Pod as a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-1. Expose the Pod to the public internet using the kubectl expose command:
+1. Expose the Pod to the public internet using the `kubectl expose` command:
 
     `kubectl expose deployment hello-node --type=LoadBalancer --port=8080`{{execute}}
 
