@@ -19,7 +19,7 @@ The following file is an Ingress resource that sends traffic to your Service via
                 backend:
                     serviceName: web
                     servicePort: 8080
-    ```
+    ```{{copy}}
 
 2. Create the Ingress resource by running the following command:
     
@@ -59,5 +59,5 @@ The following file is an Ingress resource that sends traffic to your Service via
     Version: 1.0.0
     Hostname: web-55b8c6998d-8k564
     ```
-    
+
     > **Note:** If you are running Minikube locally, you can visit hello-world.info from your browser.
