@@ -22,6 +22,7 @@
         labels:
             app: hello-node
     spec:
+        type: ClusterIP
         ports:
         - port: 8080
           protocol: TCP
@@ -30,6 +31,8 @@
 
     ```
 
+    > **Note**: The Service specification above will create a Service which targets TCP port 8080 on any Pod with the `app: hello-node` label, and expose it on an abstracted Service port (`targetPort:` is the port the container accepts traffic on, `port:` is the abstracted Service port, which can be any port other pods use to access the Service). View Service API object to see the list of supported fields in service definition.
+
 2. View the Service you just created:
 
     `kubectl get services`{{execute}}
@@ -37,45 +40,6 @@
     Output:
 
     ```
-    NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-    hello-node   ClusterIP      10.96.0.1       <none>        8080:30369/TCP   21s
+    NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+    hello-node   ClusterIP   10.103.232.158   <none>        8080/TCP   19s
     ```
-
-
-##### DELETE ME #####
-
-Create a file named `service.yaml` with the following content:
-    
-    `touch service.yaml`{{execute}}
-
-    <pre class="file" data-filename="service.yaml" data-target="replace">---
-    apiVersion: v1
-    kind: Service
-    metadata:
-        name: my-nginx
-        labels:
-            run: my-nginx
-    spec:
-        selector:
-            run: my-nginx
-        type: ClusterIP
-        ports:
-        - name: http
-          port: 8080
-          protocol: TCP
-    </pre>
-
-2. Now let's create our service:
-
-    `kubectl apply -f ./service.yaml`{{execute}}
-
-    The Service specification above will create a Service which targets TCP port 80 on any Pod with the `run: my-nginx` label, and expose it on an abstracted Service port (`targetPort:` is the port the container accepts traffic on, `port:` is the abstracted Service port, which can be any port other pods use to access the Service). View Service API object to see the list of supported fields in service definition. Check your Service:
-
-
-3. List all services deployed in the cluster:
-
-    `kubectl get services`{{execute}}
-
-4. To see our specific service:
-
-    `kubectl get svc my-nginx`{{execute}}
