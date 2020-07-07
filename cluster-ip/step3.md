@@ -8,7 +8,7 @@ Here is how we can internally reach to our service within the Cluster.
     
     Like so:
     
-    `curl http://hello-node:8080`{{execute}}
+    `curl http://hello-app:8080`{{execute}}
 
     Output:
     
