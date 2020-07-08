@@ -34,7 +34,7 @@ By default, the Pod is only accessible by its internal IP address within the Kub
     > **Note:** Please continue with the next step if you see the following error:
     ```
     *
-    X open url failed: http://172.17.0.17:30981: exit status 1
+    X open url failed: http://172.17.0.17:30369: exit status 1
     *
     * minikube is exiting due to an error.. 
     ```

@@ -38,6 +38,14 @@
     },
     "finish": {
       "text": "finish.md"
+    },
+    "assets": {
+      "client": [
+        {
+          "file": "example-ingress.yaml",
+          "target": "~/"
+        }
+      ]
     }
   },
   "environment": {
