@@ -43,7 +43,8 @@
       "host01": [
         {
           "file": "example-ingress.yaml",
-          "target": "~/"
+          "target": "/usr/local/bin/",
+          "chmod": "+x"
         }
       ]
     }
