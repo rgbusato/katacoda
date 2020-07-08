@@ -40,7 +40,7 @@
       "text": "finish.md"
     },
     "assets": {
-      "client": [
+      "host01": [
         {
           "file": "example-ingress.yaml",
           "target": "~/"
