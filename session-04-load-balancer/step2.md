@@ -11,7 +11,7 @@ By default, the Pod is only accessible by its internal IP address within the Kub
     Output:
 
     ```
-    service/hello-node exposed
+    service/hello-app exposed
     ```
 
 2. View the Service you just created:
@@ -22,14 +22,14 @@ By default, the Pod is only accessible by its internal IP address within the Kub
 
     ```
     NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-    hello-node   LoadBalancer   10.108.144.78   <pending>     8080:30369/TCP   21s
+    hello-app   LoadBalancer   10.108.144.78   <pending>     8080:30369/TCP   21s
     ```
 
     > **Note:** On cloud providers that support load balancers, an external IP address would be provisioned to access the Service. **On Minikube, the LoadBalancer type makes the Service accessible through the `minikube service` command.**
 
 3. Run the following command:
 
-    `minikube service hello-node`{{execute}}
+    `minikube service hello-app`{{execute}}
 
 4. Katacoda environment only: 
 
