@@ -3,9 +3,9 @@ The following file is an Ingress resource that sends traffic to your Service via
 
 1. Take a look at the contents of `example-ingress.yaml`.
 
-`cat example-ingress.yaml`{{execute}}
+    `cat example-ingress.yaml`{{execute}}
 
-We will be using this file to create our Ingress resource.
+    We will be using this file to create our Ingress resource.
 
 
 2. Create the Ingress resource by running the following command:
