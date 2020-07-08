@@ -44,6 +44,10 @@
         {
           "file": "example-ingress.yaml",
           "target": "~/"
+        },
+        {
+          "file": "example-ingress-2.yaml",
+          "target": "~/"
         }
       ]
     }
