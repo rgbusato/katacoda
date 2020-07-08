@@ -23,6 +23,8 @@
     hello-app   1/1     1            1           1m
     ```
 
+     > **Note**: wait until the READY field displays `1/1`
+
 3. View the Pod:
     
     `kubectl get pods`{{execute}}
@@ -31,5 +33,5 @@
 
     ```
     NAME                          READY     STATUS    RESTARTS   AGE
-    hello-app-5f76cf6ccf-br9b5   1/1       Running   0          1m
+    hello-app-5f85f64f6c-5zc6p   1/1       Running   0          1m
     ```

@@ -1,8 +1,8 @@
 {
-  "title": "ClusterIP",
+  "title": "Session 4 - Create ClusterIP Service",
   "description": "Creating a Service of type ClusterIP",
   "difficulty": "Beginner",
-  "time": "10",
+  "time": "5-10 minutes",
   "details": {
     "steps": [
       {

@@ -13,5 +13,7 @@ Here is how we can internally reach to our service within the Cluster.
     Output:
     
     ```
-    Hello World!
+    Hello, world!
+    Version: 1.0.0
+    Hostname: hello-app-5f85f64f6c-5zc6p
     ```

@@ -1,3 +1,7 @@
+You were able to follow simple instructions and click buttons.
+You really outdid yourself on this one.
+Keep up the good work!
+
 # What's next?
 
 * Learn more about [Deployment objects](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).

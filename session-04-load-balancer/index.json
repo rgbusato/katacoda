@@ -1,8 +1,8 @@
 {
-  "title": "LoadBalancer",
-  "description": "Creating a Service of type LoadBalancer",
+  "title": "Session 4 - Fancy Load Balancer",
+  "description": "Let's create a Service of type LoadBalancer.",
   "difficulty": "Beginner",
-  "time": "10",
+  "time": "5 minutes",
   "details": {
     "steps": [
       {

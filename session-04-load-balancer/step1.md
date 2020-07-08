@@ -2,12 +2,12 @@
 
 1. Use the `kubectl create` command to create a Deployment that manages a Pod. The Pod runs a Container based on the provided Docker image.
 
-    `kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node`{{execute}}
+    `kubectl create deployment hello-app --image=gcr.io/google-samples/hello-app:1.0`{{execute}}
 
     Output:
     
     ```
-    deployment.apps/hello-node created
+    deployment.apps/hello-app created
     ```
 
 2. View the Deployment:
@@ -18,7 +18,7 @@
 
     ```
     NAME         READY   UP-TO-DATE   AVAILABLE   AGE
-    hello-node   1/1     1            1           1m
+    hello-app   1/1     1            1           1m
     ```
 
 3. View the Pod:
@@ -29,5 +29,5 @@
 
     ```
     NAME                          READY     STATUS    RESTARTS   AGE
-    hello-node-5f76cf6ccf-br9b5   1/1       Running   0          1m
+    hello-app-5f76cf6ccf-br9b5   1/1       Running   0          1m
     ```
