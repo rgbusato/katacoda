@@ -31,9 +31,17 @@ By default, the Pod is only accessible by its internal IP address within the Kub
 
     `minikube service hello-app`{{execute}}
 
+    > **Note:** Please continue with the next step if you see the following error:
+    ```
+    *
+    X open url failed: http://172.17.0.17:30981: exit status 1
+    *
+    * minikube is exiting due to an error.. 
+    ```
+
 4. Katacoda environment only: 
 
-    * **Note the 5 digit port number** displayed opposite to `8080` in services output. This port number is randomly generated and it can be different for you. 
+    * **Note the 5 digit port number** displayed opposite to `8080` in services output (`kubectl get services`). This port number is randomly generated and it can be different for you. 
     * **Click the plus sign** next to your `Terminal`, and then click **Select port to view on Host 1**
     * **Type your number in the port number text box**, then click Display Port. 
         * Using the example from earlier, you would type `30369`.
