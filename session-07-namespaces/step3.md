@@ -4,7 +4,7 @@ A Kubernetes namespace provides the scope for Pods, Services, and Deployments in
 
 Users interacting with one namespace do not see the content in another namespace.
 
-To demonstrate this, let's spin up a simple Deployment and Pods in the development namespace.
+To demonstrate this, let's start by spinning up a simple Deployment and Pods in the development namespace.
 
 1. We first check what is the current context:
 
@@ -65,7 +65,7 @@ To demonstrate this, let's spin up a simple Deployment and Pods in the developme
 
     `dev`
 
-    *At this point, all requests we make to the Kubernetes cluster from the command line are scoped to the development namespace.*
+    **At this point, all requests we make to the Kubernetes cluster from the command line are scoped to the development namespace.**
 
     Let's create some contents:
 

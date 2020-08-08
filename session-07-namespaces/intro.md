@@ -1,8 +1,8 @@
 # Namespaces Walkthrough
 
-*This example demonstrates how to use Kubernetes namespaces to subdivide your cluster.*
+**This example demonstrates how to use Kubernetes namespaces to subdivide your cluster.**
 
-Kubernetes *[namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces) help* different projects, teams, or customers to *share a Kubernetes cluster*.
+Kubernetes **[namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces) help** different projects, teams, or customers to **share a Kubernetes cluster**.
 
 It does this by providing the following:
 * A scope for [Names](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/).

@@ -4,11 +4,11 @@ For this exercise, we will create two additional Kubernetes namespaces to hold o
 
 Let's imagine a scenario where an organization is using a shared Kubernetes cluster for development and production use cases.
 
-The *development team* would like to maintain a space in the cluster where they can *get a view on the list of Pods, Services, and Deployments* they use to *build and run* their application. In this space, Kubernetes resources come and go, and the *restrictions* on who can or cannot modify resources *are relaxed* to enable agile development.
+The **development team** would like to maintain a space in the cluster where they can **get a view on the list of Pods, Services, and Deployments** they use to **build and run** their application. In this space, Kubernetes resources come and go, and the **restrictions** on who can or cannot modify resources **are relaxed** to enable agile development.
 
-The *operations team* would like to maintain a space in the cluster where they can *enforce strict procedures* on who can or cannot *manipulate* the set of *Pods, Services, and Deployments* that run the *production site*.
+The **operations team** would like to maintain a space in the cluster where they can **enforce strict procedures** on who can or cannot **manipulate** the set of **Pods, Services, and Deployments** that run the **production site**.
 
-One pattern this organization could follow is to partition the Kubernetes cluster into two namespaces: *development* and *production*.
+One pattern this organization could follow is to partition the Kubernetes cluster into two namespaces: **development* and *production**.
 
 ![namespaces-diagram](./assets/namespaces-diagram1.png)
 
