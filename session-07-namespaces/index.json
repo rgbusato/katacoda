@@ -1,8 +1,8 @@
 {
-  "title": "Session 4 - Overachieve with Ingress Controller",
-  "description": "Ingress is an API object that defines rules which allow external access to services in a cluster",
-  "difficulty": "Intermediate",
-  "time": "10-15 minutes",
+  "title": "Session 7 - Subdivide with Namespaces",
+  "description": "This example demonstrates how to use Kubernetes namespaces to subdivide your cluster",
+  "difficulty": "Beginner",
+  "time": "10 minutes",
   "details": {
     "steps": [
       {
@@ -17,24 +17,12 @@
       {
         "title": "Step 3",
         "text": "step3.md"
-      },
-      {
-        "title": "Step 4",
-        "text": "step4.md"
-      },
-      {
-        "title": "Step 5",
-        "text": "step5.md"
-      },
-      {
-        "title": "Step 6",
-        "text": "step6.md"
       }
     ],
     "intro": {
       "courseData": "env-init.sh",
       "text": "intro.md",
-      "credits": "https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/"
+      "credits": "https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/"
     },
     "finish": {
       "text": "finish.md"
@@ -42,11 +30,15 @@
     "assets": {
       "host01": [
         {
-          "file": "example-ingress.yaml",
+          "file": "namespace-dev.json",
           "target": "~/"
         },
         {
-          "file": "example-ingress-2.yaml",
+          "file": "namespace-prod.json",
+          "target": "~/"
+        },
+        {
+          "file": "snowflake-deployment.yaml",
           "target": "~/"
         }
       ]
