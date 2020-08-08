@@ -180,9 +180,11 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     
     `kubectl get pods`{{execute}}
 
+    > **Note:** Notice how resources in one namespace are hidden from the other.
+
     Production likes to run cattle, so let's create some **cattle pods**
 
-    `kubectl create deployment cattle --image=k8s.gcr.io/serve_hostname`{{execute}}
+    `kubectl create deployment cattle --image=nginx`{{execute}}
 
     `kubectl scale deployment cattle --replicas=5`{{execute}}
 
