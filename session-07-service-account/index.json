@@ -1,0 +1,62 @@
+{
+  "title": "Session 4 - Overachieve with Ingress Controller",
+  "description": "Ingress is an API object that defines rules which allow external access to services in a cluster",
+  "difficulty": "Intermediate",
+  "time": "10-15 minutes",
+  "details": {
+    "steps": [
+      {
+        "title": "Step 1",
+        "code": "foreground.sh",
+        "text": "step1.md"
+      },
+      {
+        "title": "Step 2",
+        "text": "step2.md"
+      },
+      {
+        "title": "Step 3",
+        "text": "step3.md"
+      },
+      {
+        "title": "Step 4",
+        "text": "step4.md"
+      },
+      {
+        "title": "Step 5",
+        "text": "step5.md"
+      },
+      {
+        "title": "Step 6",
+        "text": "step6.md"
+      }
+    ],
+    "intro": {
+      "courseData": "env-init.sh",
+      "text": "intro.md",
+      "credits": "https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/"
+    },
+    "finish": {
+      "text": "finish.md"
+    },
+    "assets": {
+      "host01": [
+        {
+          "file": "example-ingress.yaml",
+          "target": "~/"
+        },
+        {
+          "file": "example-ingress-2.yaml",
+          "target": "~/"
+        }
+      ]
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "port": 30000,
+    "dockerimage": "minikube-running"
+  }
+}
