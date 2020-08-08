@@ -9,6 +9,10 @@ By default, a Kubernetes cluster will instantiate a default namespace when provi
     Output:
 
     ```
-    NAME      STATUS    AGE
-    default   Active    13m
+    NAME                   STATUS   AGE
+    default                Active   22s
+    kube-node-lease        Active   23s
+    kube-public            Active   23s
+    kube-system            Active   24s
+    kubernetes-dashboard   Active   16s
     ```

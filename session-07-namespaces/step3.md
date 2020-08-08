@@ -13,14 +13,32 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     Output:
 
     ```
-    TODO
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority: /root/.minikube/ca.crt
+        server: https://172.17.0.47:8443
+      name: minikube
+    contexts:
+    - context:
+        cluster: minikube
+        user: minikube
+      name: minikube
+    current-context: minikube
+    kind: Config
+    preferences: {}
+    users:
+    - name: minikube
+      user:
+        client-certificate: /root/.minikube/client.crt
+        client-key: /root/.minikube/client.key
     ```
 
     `kubectl config current-context`{{execute}}
 
     Output:
 
-    `TODO: lithe-cocoa-92103_kubernetes`
+    `minikube`
 
 2. The next step is to define a context for the kubectl client to work in each namespace: 
    
@@ -28,18 +46,17 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     
     ```
     kubectl config set-context dev --namespace=development \
-    --cluster=lithe-cocoa-92103_kubernetes \
-    --user=lithe-cocoa-92103_kubernetes
+    --cluster=minikube \
+    --user=minikube
     ```{{copy}}
 
     ```
     kubectl config set-context prod --namespace=production \
-    --cluster=lithe-cocoa-92103_kubernetes \
-    --user=lithe-cocoa-92103_kubernetes
+    --cluster=minikube \
+    --user=minikube
     ```{{copy}}
 
     By default, the above commands adds two contexts that are saved into file `.kube/config`. You can now view the contexts and alternate against the two new request contexts depending on which namespace you wish to work against.
-
 
 3. To view the new contexts:
     
@@ -48,7 +65,35 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     Output:
 
     ```
-    TODO
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority: /root/.minikube/ca.crt
+        server: https://172.17.0.47:8443
+      name: minikube
+    contexts:
+    - context:
+        cluster: minikube
+        namespace: development
+        user: minikube
+      name: dev
+    - context:
+        cluster: minikube
+        user: minikube
+      name: minikube
+    - context:
+        cluster: minikube
+        namespace: production
+        user: minikube
+      name: prod
+    current-context: minikube
+    kind: Config
+    preferences: {}
+    users:
+    - name: minikube
+      user:
+        client-certificate: /root/.minikube/client.crt
+        client-key: /root/.minikube/client.key
     ```
 
 4. Deploying to the `development` namespace:
@@ -108,7 +153,7 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     
     ```
     NAME         READY   UP-TO-DATE   AVAILABLE   AGE
-    snowflake    2/2     2            2           2m
+    snowflake    2/2     2            2           4s
     ```
 
     `kubectl get pods -l app=snowflake`{{execute}}
@@ -117,8 +162,8 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     
     ```
     NAME                         READY     STATUS    RESTARTS   AGE
-    snowflake-3968820950-9dgr8   1/1       Running   0          2m
-    snowflake-3968820950-vgc4n   1/1       Running   0          2m
+    snowflake-3968820950-9dgr8   1/1       Running   0          27s
+    snowflake-3968820950-vgc4n   1/1       Running   0          27s
     ```
 
     And this is great, developers are able to do what they want, and they do not have to worry about affecting content in the production namespace.
@@ -135,8 +180,7 @@ To demonstrate this, let's start by spinning up a simple Deployment and Pods in 
     
     `kubectl get pods`{{execute}}
 
-    
-    Production likes to run cattle, so let's create some *cattle pods*
+    Production likes to run cattle, so let's create some **cattle pods**
 
     `kubectl create deployment cattle --image=k8s.gcr.io/serve_hostname`{{execute}}
 

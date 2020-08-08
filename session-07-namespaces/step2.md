@@ -39,7 +39,7 @@ Let's create two new namespaces to hold our work.
 
     Output:
 
-    `TODO`
+    `namespace/development created`
 
 3. Next, let's create the `production` namespace:
 
@@ -62,6 +62,9 @@ Let's create two new namespaces to hold our work.
 
     `kubectl create -f namespace-prod.json`{{execute}}
 
+    Output:
+
+    `namespace/production created`
 
 4. To be sure things are right, let's list all of the namespaces in our cluster:
 
