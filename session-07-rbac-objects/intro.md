@@ -1,1 +1,8 @@
-# This scenario shows you how to set up a simple NGINX Ingress controller which routes requests to Service web or web2 depending on the HTTP URI #
+# In this example you will learn the following:
+
+* create a namespace
+* create a secret within that namespace
+* create a serviceaccount (not default) within that namespace
+* deploy a pod within that namespace that uses the ServiceAccount we've created
+* ensure that the pod can read the secret within that namespace
+

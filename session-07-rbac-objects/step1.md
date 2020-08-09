@@ -1,26 +1,263 @@
-# Enable the Ingress controller
+ref= https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/#use-case-2-enable-helm-in-your-cluster
+# Create Namespace
 
-1. To enable the NGINX Ingress controller, run the following command:
+`kubectl create namespace office`
 
-    `minikube addons enable ingress`{{execute}}
+Output:
 
-2. Verify that the NGINX Ingress controller is running
+`namespace/office created`
 
-    `kubectl get pods -n kube-system`{{execute}}
+# Create the user credentials
 
-    > **Note:** This can take up to a minute.
+`openssl genrsa -out employee.key 2048`
 
-    Output:
+Output:
 
-    ```
-    NAME                                        READY   STATUS    RESTARTS   AGE
-    coredns-6955765f44-4phmx                    1/1     Running   0          37s
-    coredns-6955765f44-j8z5z                    1/1     Running   0          37s
-    etcd-minikube                               1/1     Running   0          39s
-    kube-apiserver-minikube                     1/1     Running   0          39s
-    kube-controller-manager-minikube            1/1     Running   0          39s
-    kube-proxy-sqj72                            1/1     Running   0          37s
-    kube-scheduler-minikube                     1/1     Running   0          39s
-    nginx-ingress-controller-6fc5bcc8c9-4n8z6   0/1     Running   0          37s
-    storage-provisioner                         1/1     Running   0          41s
-    ```
+```
+Generating RSA private key, 2048 bit long modulus (2 primes)
+......+++++
+.......+++++
+e is 65537 (0x010001)
+```
+
+`openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`
+
+
+```
+export CA_LOCATION=/etc/kubernetes/pki
+openssl x509 -req -in employee.csr -CA $CA_LOCATION/ca.crt -CAkey $CA_LOCATION/ca.key -CAcreateserial -out employee.crt -days 500
+```
+
+Output:
+```
+Signature ok
+subject=CN = employee, O = slalom
+Getting CA Private Key
+```
+
+```
+mkdir -p /home/employee/.certs/
+cp ./employee.* /home/employee/.certs/
+controlplane $ ls -ltr /home/employee/.certs/
+total 12
+-rw------- 1 root root 1675 Aug  9 20:27 employee.key
+-rw-r--r-- 1 root root  911 Aug  9 20:27 employee.csr
+-rw-r--r-- 1 root root 1013 Aug  9 20:27 employee.crt
+```
+
+```
+kubectl config set-credentials employee --client-certificate=/home/employee/.certs/employee.crt  --client-key=/home/employee/.certs/employee.key
+```
+
+Output:
+`User "employee" set.`
+
+```
+kubectl config set-context employee-context --cluster=kubernetes --namespace=office --user=employee
+```
+
+Output:
+`Context "employee-context" created.`
+
+`kubectl --context=employee-context get pods`
+
+Output:
+
+```
+Error from server (Forbidden): pods is forbidden: User "employee" cannot list resource "pods" in API group "" in the namespace "office"
+```
+
+# Step 3
+`cat role-deployment-manager.yaml`
+
+```
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  namespace: office
+  name: deployment-manager
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["deployments", "replicasets", "pods"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
+```
+
+`kubectl create -f role-deployment-manager.yaml`
+
+Output:
+
+`role.rbac.authorization.k8s.io/deployment-manager created`
+
+List the Role created (optional):
+```
+controlplane $ kubectl get roles -n office
+NAME                 CREATED AT
+deployment-manager   2020-08-09T20:35:29Z
+```
+
+# Step 4 Bind the role to the employee user
+
+`cat rolebinding-deployment-manager.yaml`
+
+```
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: deployment-manager-binding
+  namespace: office
+subjects:
+- kind: User
+  name: employee
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: deployment-manager
+  apiGroup: ""
+```
+
+`kubectl create -f rolebinding-deployment-manager.yaml`
+
+Output:
+
+`rolebinding.rbac.authorization.k8s.io/deployment-manager-binding created`
+
+
+# Step 5 - Test RBAC rule for the User
+```
+kubectl --context=employee-context run --image bitnami/dokuwiki mydokuwiki
+kubectl --context=employee-context get pods
+```
+
+
+The following command will fail:
+
+`kubectl --context=employee-context get pods --namespace=default`
+
+Output:
+
+```
+Error from server (Forbidden): pods is forbidden: User "employee" cannot list resource "pods" in API group "" in the namespace "default"
+```
+
+**Now you have created a user with limited permissions in your cluster.**
+
+To show how we can reuse the Previously create Role called deployment-manager, we will now create a new RoleBinding but this time for a ServiceAccount.
+
+Step 1- Create ServiceAccount
+
+`kubectl create serviceaccount robot --namespace office`
+
+Output:
+
+`serviceaccount/robot created`
+
+file: `rolebinding-robot.yaml`
+```
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: robot-binding
+  namespace: office
+subjects:
+- kind: ServiceAccount
+  name: robot
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: deployment-manager
+  apiGroup: ""
+```
+
+`kubectl create -f rolebinding-robot.yaml`
+
+Output:
+
+```
+rolebinding.rbac.authorization.k8s.io/robot-binding created
+```
+
+
+# test the pod permissions - end of this SO tread: https://stackoverflow.com/questions/42642170/how-to-run-kubectl-commands-inside-a-container
+
+
+```
+kubectl --context=employee-context run --image bitnami/dokuwiki mydokuwiki
+
+kubectl exec -it <your-container-with-the-attached-privs> -- /kubectl get pods -n <YOUR_NAMESPACE>
+kubectl run curl --rm --image=radial/busyboxplus:curl -i --tty 
+```
+
+# Create a POD (will use the default serviceaccount) 
+
+`kubectl run --namespace office --image bitnami/dokuwiki mydokuwiki`
+
+` kubectl get pods -n office`
+
+# Create a new POD (will use the specific ServiceAccount we've created)
+
+`cat robot-pod.yaml`
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: robot
+  namespace: office
+spec:
+  serviceAccountName: robot
+  containers:
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command: ['/bin/bash', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
+```
+
+`kubectl create -f robot-pod.yaml`
+
+Output:
+
+```
+controlplane $ kubectl get pods -n office
+NAME         READY   STATUS    RESTARTS   AGE
+robot        1/1     Running   0          9s
+mydokuwiki   1/1     Running   0          6m27s
+```
+
+Verify the pod is running with the service account we've created for it:
+`kubectl get pod/robot -n office -o yaml`
+
+
+```
+...
+# service account info
+serviceAccount: robot
+serviceAccountName: robot
+...
+# robot serviceaccount token mounted to the pod
+volumes:
+  - name: robot-token-4brqx
+    secret:
+      defaultMode: 420
+      secretName: robot-token-4brqx
+```
+
+
+Now we get inside the running container and try to list pods within our namespace. This exercise will make sure that the Pod (using the ServiceAccount we've created for it) can in fact view the running pod within our office namespace.
+
+
+```
+kubectl exec --namespace=office -it robot -- /bin/bash
+I have no name!@my-pod:/$ kubectl get pods -n office
+NAME         READY   STATUS    RESTARTS   AGE
+robot        1/1     Running   0          99s
+mydokuwiki   1/1     Running   0          33m
+```
+OR
+```
+kubectl exec --namespace=office -it robot -- kubectl get pods -n office
+NAME         READY   STATUS    RESTARTS   AGE
+my-pod       1/1     Running   0          2m57s
+mydokuwiki   1/1     Running   0          35m
+```
+
+
+NOTE: why can I still see everything that is in the other namespaces ?
+Seems weird, maybe we forgot to do something here.
