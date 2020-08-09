@@ -1,7 +1,7 @@
 ref= https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/#use-case-2-enable-helm-in-your-cluster
 # Create Namespace
 
-`kubectl create namespace office`
+`kubectl create namespace office`{{execute}}
 
 Output:
 
@@ -9,7 +9,7 @@ Output:
 
 # Create the user credentials
 
-`openssl genrsa -out employee.key 2048`
+`openssl genrsa -out employee.key 2048`{{execute}}
 
 Output:
 
@@ -20,13 +20,13 @@ Generating RSA private key, 2048 bit long modulus (2 primes)
 e is 65537 (0x010001)
 ```
 
-`openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`
+`openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`{{execute}}
 
 
 ```
 export CA_LOCATION=/etc/kubernetes/pki
 openssl x509 -req -in employee.csr -CA $CA_LOCATION/ca.crt -CAkey $CA_LOCATION/ca.key -CAcreateserial -out employee.crt -days 500
-```
+```{{execute}}
 
 Output:
 ```
@@ -43,23 +43,23 @@ total 12
 -rw------- 1 root root 1675 Aug  9 20:27 employee.key
 -rw-r--r-- 1 root root  911 Aug  9 20:27 employee.csr
 -rw-r--r-- 1 root root 1013 Aug  9 20:27 employee.crt
-```
+```{{copy}}
 
 ```
 kubectl config set-credentials employee --client-certificate=/home/employee/.certs/employee.crt  --client-key=/home/employee/.certs/employee.key
-```
+```{{execute}}
 
 Output:
 `User "employee" set.`
 
 ```
 kubectl config set-context employee-context --cluster=kubernetes --namespace=office --user=employee
-```
+```{{execute}}
 
 Output:
 `Context "employee-context" created.`
 
-`kubectl --context=employee-context get pods`
+`kubectl --context=employee-context get pods`{{execute}}
 
 Output:
 
@@ -68,7 +68,7 @@ Error from server (Forbidden): pods is forbidden: User "employee" cannot list re
 ```
 
 # Step 3
-`cat role-deployment-manager.yaml`
+`cat role-deployment-manager.yaml`{{execute}}
 
 ```
 kind: Role
@@ -82,7 +82,7 @@ rules:
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
 ```
 
-`kubectl create -f role-deployment-manager.yaml`
+`kubectl create -f role-deployment-manager.yaml`{{execute}}
 
 Output:
 
@@ -97,7 +97,7 @@ deployment-manager   2020-08-09T20:35:29Z
 
 # Step 4 Bind the role to the employee user
 
-`cat rolebinding-deployment-manager.yaml`
+`cat rolebinding-deployment-manager.yaml`{{execute}}
 
 ```
 kind: RoleBinding
@@ -115,7 +115,7 @@ roleRef:
   apiGroup: ""
 ```
 
-`kubectl create -f rolebinding-deployment-manager.yaml`
+`kubectl create -f rolebinding-deployment-manager.yaml`{{execute}}
 
 Output:
 
@@ -131,7 +131,7 @@ kubectl --context=employee-context get pods
 
 The following command will fail:
 
-`kubectl --context=employee-context get pods --namespace=default`
+`kubectl --context=employee-context get pods --namespace=default`{{execute}}
 
 Output:
 
@@ -145,13 +145,13 @@ To show how we can reuse the Previously create Role called deployment-manager, w
 
 Step 1- Create ServiceAccount
 
-`kubectl create serviceaccount robot --namespace office`
+`kubectl create serviceaccount robot --namespace office`{{execute}}
 
 Output:
 
 `serviceaccount/robot created`
 
-file: `rolebinding-robot.yaml`
+`cat rolebinding-robot.yaml`{{execute}}
 ```
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -168,7 +168,7 @@ roleRef:
   apiGroup: ""
 ```
 
-`kubectl create -f rolebinding-robot.yaml`
+`kubectl create -f rolebinding-robot.yaml`{{execute}}
 
 Output:
 
@@ -191,11 +191,11 @@ kubectl run curl --rm --image=radial/busyboxplus:curl -i --tty
 
 `kubectl run --namespace office --image bitnami/dokuwiki mydokuwiki`
 
-` kubectl get pods -n office`
+`kubectl get pods -n office`
 
 # Create a new POD (will use the specific ServiceAccount we've created)
 
-`cat robot-pod.yaml`
+`cat robot-pod.yaml`{{execute}}
 ```
 apiVersion: v1
 kind: Pod
@@ -210,7 +210,7 @@ spec:
     command: ['/bin/bash', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
 ```
 
-`kubectl create -f robot-pod.yaml`
+`kubectl create -f robot-pod.yaml`{{execute}}
 
 Output:
 
@@ -222,7 +222,7 @@ mydokuwiki   1/1     Running   0          6m27s
 ```
 
 Verify the pod is running with the service account we've created for it:
-`kubectl get pod/robot -n office -o yaml`
+`kubectl get pod/robot -n office -o yaml`{{execute}}
 
 
 ```
