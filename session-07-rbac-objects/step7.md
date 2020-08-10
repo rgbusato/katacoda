@@ -16,7 +16,7 @@ Since **Pods use ServiceAccounts**, we need to start by creating a ServiceAccoun
 
 2. Create a new RoleBinding:
     
-    To show how we can **reuse the previously created Role** called `deployment-manager`, we will now create a **new RoleBinding** but this time for a **ServiceAccount** (not a **User**) that we have just created above
+    To show how we can **reuse the previously created Role** called `deployment-manager`, we will now create a **new RoleBinding** but this time for a **ServiceAccount** (not a **User**).
 
     `cat rolebinding-robot.yaml`{{execute}}
     
@@ -104,9 +104,9 @@ Since **Pods use ServiceAccounts**, we need to start by creating a ServiceAccoun
 
 5. Run kubectl within the Pod to test it's access:
 
-    Now we get inside the running container and try to list pods within our namespace. 
+    Next, we go inside the running container and try to list Pods within our namespace.
     
-    This exercise will make sure that the Pod (using the ServiceAccount we've created for it) can in fact view the running pod within our office namespace.
+    This exercise will make sure that the **Pod** (using the **ServiceAccount** we've created for it) can in fact view the running **Pod** within our `office` **Namespace**.
 
     This is **similar** to the exercise we did earlier with the newly created **User account**. Except that this time we will be doing it with a `robot` **ServiceAccount**
 
@@ -122,7 +122,7 @@ Since **Pods use ServiceAccounts**, we need to start by creating a ServiceAccoun
     mydokuwiki   1/1     Running   0          35m
     ```
 
-    That's great, but can I access resources in other namespaces?
+    **That's great, but can I access resources in other namespaces?**
 
     `kubectl exec --namespace=office -it robot -- kubectl get pods -n default`{{execute}}
 
@@ -133,4 +133,4 @@ Since **Pods use ServiceAccounts**, we need to start by creating a ServiceAccoun
     command terminated with exit code 1
     ```
 
-    Apparently not, that is exactly what we wanted!
+    **Apparently not, that is exactly what we wanted!**

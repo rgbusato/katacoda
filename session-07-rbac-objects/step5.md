@@ -22,7 +22,7 @@
       apiGroup: rbac.authorization.k8s.io
     ```
 
-    Create the Role in the cluster using the `kubectl create` command:
+    Create the RoleBinding using the `kubectl create` command:
 
     `kubectl create -f rolebinding-deployment-manager.yaml`{{execute}}
 
