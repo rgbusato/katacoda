@@ -33,3 +33,9 @@
     NAME                 CREATED AT
     deployment-manager   2020-08-09T20:35:29Z
     ```
+
+2. View Role object
+
+    You can view the configuration of the **Role** by running the following command:
+
+    `kubectl describe role/deployment-manager -n office`{{execute}}

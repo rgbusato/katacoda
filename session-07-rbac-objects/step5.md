@@ -2,7 +2,7 @@
 
 1. Create a RoleBinding
     
-    In this file, we are binding the deployment-manager Role to the User Account employee inside the office namespace:
+    In this file, **we are binding the deployment-manager Role to the User Account employee inside the office namespace**:
 
     `cat rolebinding-deployment-manager.yaml`{{execute}}
 
@@ -32,6 +32,6 @@
 
 2. View RoleBinding object
 
-    You can view the configuration of the rolebinding by running the following command:
+    You can view the configuration of the **RoleBinding** by running the following command:
 
     `kubectl describe rolebinding/deployment-manager-binding -n office`{{execute}}

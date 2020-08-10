@@ -1,8 +1,8 @@
-# Create the user credentials
+# Create the User credentials
 
-As previously mentioned, Kubernetes does not have API Objects for User Accounts. Of the available ways to manage authentication (see Kubernetes official documentation for a complete list), we will use OpenSSL certificates for their simplicity. 
+> **Note:** **Kubernetes does not have API Objects for User Accounts**. 
 
-The necessary steps are:
+Of the available ways to manage authentication (see [Kubernetes official documentation](https://kubernetes.io/docs/admin/authentication) for a complete list), we will use OpenSSL certificates for their simplicity.
 
 1. Create a private key for your user. 
    
@@ -12,7 +12,7 @@ The necessary steps are:
 
     Output:
 
-    ```
+    ```bash
     Generating RSA private key, 2048 bit long modulus (2 primes)
     ......+++++
     .......+++++
@@ -21,15 +21,17 @@ The necessary steps are:
 
 2. Create a certificate sign request `employee.csr`:
     
-    Create a certificate sign request employee.csr using the private key you just created (employee.key in this example). 
+    Create a certificate sign request `employee.csr` using the private key you just created (`employee.key` in this example). 
     
-    Make sure you specify your username and group in the -subj section (CN is for the username and O for the group). As previously mentioned, we will use employee as the name and slalom as the group:
+    Make sure you specify your username and group in the `-subj` section (CN is for the username and O for the group). 
+    
+    We will use `employee` as the **name** and `slalom` as the **group**:
 
     `openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`{{execute}}
 
     > **Note:** Don't worry if you see the following error in the output:
 
-    ```
+    ```bash
     Can't load /root/.rnd into RNG
     139912319340992:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
     ```
