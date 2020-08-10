@@ -1,19 +1,37 @@
-# Edit Ingress
+# Bind the Role to the employee user
 
-1. A new path was added to our ingress.
+1. Create a RoleBinding
+    
+    In this file, we are binding the deployment-manager Role to the User Account employee inside the office namespace:
+
+    `cat rolebinding-deployment-manager.yaml`{{execute}}
+
     ```
-        - path: /v2/*
-          backend:
-            serviceName: web2
-            servicePort: 8080
+    kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: deployment-manager-binding
+      namespace: office
+    subjects:
+    - kind: User
+      name: employee
+      apiGroup: rbac.authorization.k8s.io
+    roleRef:
+      kind: Role
+      name: deployment-manager
+      apiGroup: rbac.authorization.k8s.io
     ```
-    Take a look at the full file:
-    `cat example-ingress-2.yaml`{{execute}}
 
-2. Apply the changes:
+    Create the Role in the cluster using the `kubectl create` command:
 
-    `kubectl apply -f example-ingress-2.yaml`{{execute}}
+    `kubectl create -f rolebinding-deployment-manager.yaml`{{execute}}
 
     Output:
 
-    `ingress.extensions/example-ingress configured`
+    `rolebinding.rbac.authorization.k8s.io/deployment-manager-binding created`
+
+2. View RoleBinding object
+
+    You can view the configuration of the rolebinding by running the following command:
+
+    `kubectl describe rolebinding/deployment-manager-binding -n office`{{execute}}

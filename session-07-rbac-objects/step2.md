@@ -1,112 +1,100 @@
-# Create a ServiceAccount
 
-To show how we can reuse the Previously create Role called deployment-manager, we will now create a new RoleBinding but this time for a ServiceAccount.
+# Create Namespace
 
-1. Create a `robot` ServiceAccount:
+1. Create Namespace
 
-    `kubectl create serviceaccount robot --namespace office`{{execute}}
+  Execute the kubectl create command to create the namespace (as the admin user):
 
-    Output:
-    
-    `serviceaccount/robot created`
+  `kubectl create namespace office`{{execute}}
 
-2. Create a new RoleBinding:
+  Output:
 
-    `cat rolebinding-robot.yaml`{{execute}}
-    
-    Output:
+  `namespace/office created`
 
-    ```yaml
-    kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    metadata:
-      name: robot-binding
-      namespace: office
-    subjects:
-    - kind: ServiceAccount
-      name: robot
-      apiGroup: ""
-    roleRef:
-      kind: Role
-      name: deployment-manager
-      apiGroup: ""
-    ```
 
-    `kubectl create -f rolebinding-robot.yaml`{{execute}}
+2. Create the user credentials
 
-    Output:
 
-    ```
-    rolebinding.rbac.authorization.k8s.io/robot-binding created
-    ```
+# Step 5 - Test RBAC rule for the User
+```
+kubectl --context=employee-context run --image bitnami/dokuwiki mydokuwiki
+kubectl --context=employee-context get pods
+```
 
-3. Deploy a new Pod using the ServiceAccount:
 
-    `cat robot-pod.yaml`{{execute}}
+The following command will fail:
 
-    ```yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-        name: robot
-        namespace: office
-    spec:
-        serviceAccountName: robot
-        containers:
-        - name: kubectl
-            image: bitnami/kubectl:latest
-            command: ['/bin/bash', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
-    ```
+`kubectl --context=employee-context get pods --namespace=default`{{execute}}
 
-    `kubectl create -f robot-pod.yaml`{{execute}}
+Output:
 
-    Output:
+```
+Error from server (Forbidden): pods is forbidden: User "employee" cannot list resource "pods" in API group "" in the namespace "default"
+```
 
-    ```bash
-    controlplane $ kubectl get pods -n office
-    NAME         READY   STATUS    RESTARTS   AGE
-    robot        1/1     Running   0          9s
-    mydokuwiki   1/1     Running   0          6m27s
-    ```
+**Now you have created a user with limited permissions in your cluster.**
 
-4. Verify the Pod is running with the service account we've created for it:
 
-    `kubectl get pod/robot -n office -o yaml`{{execute}}
+-------
 
-    OR
+# test the pod permissions - end of this SO tread: https://stackoverflow.com/questions/42642170/how-to-run-kubectl-commands-inside-a-container
 
-    `kubectl describe pod/robot -n office`{{execute}}
 
-    NOTE: even after deleting the RoleBinding pod still able to view all pods using the serviceaccount. weird
+```
+kubectl --context=employee-context run --image bitnami/dokuwiki mydokuwiki
 
-    TODO: need to audit what is actually being used
+kubectl exec -it <your-container-with-the-attached-privs> -- /kubectl get pods -n <YOUR_NAMESPACE>
+kubectl run curl --rm --image=radial/busyboxplus:curl -i --tty 
+```
 
-    Now we get inside the running container and try to list pods within our namespace. This exercise will make sure that the Pod (using the ServiceAccount we've created for it) can in fact view the running pod within our office namespace.
+# Create a POD (will use the default serviceaccount) 
 
-    ```bash
-    kubectl exec --namespace=office -it robot -- /bin/bash
-    ```
+`kubectl run --namespace office --image bitnami/dokuwiki mydokuwiki`
 
-    ```bash
-    I have no name!@my-pod:/$ kubectl get pods -n office
-    NAME         READY   STATUS    RESTARTS   AGE
-    robot        1/1     Running   0          99s
-    mydokuwiki   1/1     Running   0          33m
-    ```
-    
-    OR
+`kubectl get pods -n office`
 
-    ```bash
-    kubectl exec --namespace=office -it robot -- kubectl get pods -n office
-    ```
+# Create a new POD (will use the specific ServiceAccount we've created)
 
-    Output:
+`cat robot-pod.yaml`{{execute}}
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: robot
+  namespace: office
+spec:
+  serviceAccountName: robot
+  containers:
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command: ['/bin/bash', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
+```
 
-    ```
-    NAME         READY   STATUS    RESTARTS   AGE
-    my-pod       1/1     Running   0          2m57s
-    mydokuwiki   1/1     Running   0          35m
-    ```
+`kubectl create -f robot-pod.yaml`{{execute}}
 
-    NOTE: why can I still see everything that is in the other namespaces ?
-    Seems weird, maybe we forgot to do something here.
+Output:
+
+```
+controlplane $ kubectl get pods -n office
+NAME         READY   STATUS    RESTARTS   AGE
+robot        1/1     Running   0          9s
+mydokuwiki   1/1     Running   0          6m27s
+```
+
+Verify the pod is running with the service account we've created for it:
+`kubectl get pod/robot -n office -o yaml`{{execute}}
+
+----
+```
+...
+# service account info
+serviceAccount: robot
+serviceAccountName: robot
+...
+# robot serviceaccount token mounted to the pod
+volumes:
+  - name: robot-token-4brqx
+    secret:
+      defaultMode: 420
+      secretName: robot-token-4brqx
+```

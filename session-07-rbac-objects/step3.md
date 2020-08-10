@@ -1,52 +1,117 @@
-# Create an Ingress resource
-The following file is an Ingress resource that sends traffic to your Service via hello-world.info.
+# Create the user credentials
 
-1. Take a look at the contents of `example-ingress.yaml`.
+As previously mentioned, Kubernetes does not have API Objects for User Accounts. Of the available ways to manage authentication (see Kubernetes official documentation for a complete list), we will use OpenSSL certificates for their simplicity. 
 
-    `cat example-ingress.yaml`{{execute}}
+The necessary steps are:
 
-    We will be using this file to create our Ingress resource.
+1. Create a private key for your user. 
+   
+   In this example, we will name the file `employee.key`
 
-
-2. Create the Ingress resource by running the following command:
-    
-    `kubectl apply -f example-ingress.yaml`{{execute}}
-
-    Output:
-
-    `ingress.networking.k8s.io/example-ingress created`
-
-3. Verify the IP address is set:
-    
-    `kubectl get ingress`{{execute}}
-
-    > **Note:** This can take a couple of minutes.
-
-    ```
-    NAME              HOSTS              ADDRESS       PORTS     AGE
-    example-ingress   hello-world.info   172.17.0.15   80        38s
-    ```
-
-4. Add the following line to the bottom of the `/etc/hosts` file.
-
-    > **Note:** If you are running Minikube locally, use minikube ip to get the external IP. The IP address displayed within the ingress list will be the internal IP.
-
-    `172.17.0.15 hello-world.info`
-
-    `echo "172.17.0.15 hello-world.info" >> /etc/hosts`
-
-    This sends requests from hello-world.info to Minikube.
-
-5. Verify that the Ingress controller is directing traffic:
-
-    `curl hello-world.info`{{execute}}
+   `openssl genrsa -out employee.key 2048`{{execute}}
 
     Output:
 
     ```
-    Hello, world!
-    Version: 1.0.0
-    Hostname: web-55b8c6998d-8k564
+    Generating RSA private key, 2048 bit long modulus (2 primes)
+    ......+++++
+    .......+++++
+    e is 65537 (0x010001)
     ```
 
-    > **Note:** If you are running Minikube locally, you can visit hello-world.info from your browser.
+2. Create a certificate sign request `employee.csr`:
+    
+    Create a certificate sign request employee.csr using the private key you just created (employee.key in this example). 
+    
+    Make sure you specify your username and group in the -subj section (CN is for the username and O for the group). As previously mentioned, we will use employee as the name and slalom as the group:
+
+    `openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`{{execute}}
+
+    > **Note:** Don't worry if you see the following error in the output:
+
+    ```
+    Can't load /root/.rnd into RNG
+    139912319340992:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
+    ```
+
+3. Locate your Kubernetes cluster certificate authority (CA)
+    
+    This will be responsible for approving the request and generating the necessary certificate to access the cluster API
+
+    In the case of Minikube, it would be `~/.minikube/`. 
+    
+    Check that the files `ca.crt` and `ca.key` exist in the location:
+
+    `ls -ltr ~/.minikube/`{{execute}}
+
+    Set the env variable `CA_LOCATION`:
+
+    `export CA_LOCATION=~/.minikube`{{execute}}
+
+4. Generate the final certificate `employee.crt`
+
+    Generate the final certificate `employee.crt` by approving the certificate sign request, `employee.csr`, you made earlier. 
+    
+    In this example, the certificate will be valid for 500 days:
+
+    ```
+    openssl x509 -req -in employee.csr -CA $CA_LOCATION/ca.crt -CAkey $CA_LOCATION/ca.key -CAcreateserial -out employee.crt -days 500
+    ```{{execute}}
+
+    Output:
+
+    ```
+    Signature ok
+    subject=CN = employee, O = slalom
+    Getting CA Private Key
+    ```
+
+5. Save both `employee.crt` and `employee.key` in a safe location 
+   
+    In this example we will use `/home/employee/.certs/`:
+
+    `mkdir -p /home/employee/.certs/`{{execute}}
+
+    `cp ./employee.* /home/employee/.certs/`{{execute}}
+
+    ```bash
+    $ ls -ltr /home/employee/.certs/
+    total 12
+    -rw------- 1 root root 1675 Aug  9 20:27 employee.key
+    -rw-r--r-- 1 root root  911 Aug  9 20:27 employee.csr
+    -rw-r--r-- 1 root root 1013 Aug  9 20:27 employee.crt
+    ```
+
+6. Add a new context with the new credentials for your Kubernetes cluster
+    
+    This example is for a Minikube cluster but it should be similar for others:
+
+    ```
+    kubectl config set-credentials employee --client-certificate=/home/employee/.certs/employee.crt  --client-key=/home/employee/.certs/employee.key
+    ```{{execute}}
+
+    Output:
+
+    `User "employee" set.`
+
+    ```
+    kubectl config set-context employee-context --cluster=minikube --namespace=office --user=employee
+    ```{{execute}}
+
+    Output:
+
+    `Context "employee-context" created.`
+
+7. Verify your current access
+
+    Now you should get an **access denied error** when using the kubectl CLI with this configuration file. 
+    
+    > **Note:** This is expected as we have not defined any permitted operations for this user
+
+    `kubectl --context=employee-context get pods`{{execute}}
+
+    Output:
+
+    ```
+    Error from server (Forbidden): pods is forbidden: User "employee" cannot list resource "pods" in API group "" in the namespace "office"
+    ```
