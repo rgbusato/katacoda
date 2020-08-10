@@ -80,6 +80,22 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
 
     `kubectl get pod/robot -n office -o yaml`{{execute}}
 
+    Output:
+
+    ```yaml
+    ...
+    # service account info
+    serviceAccount: robot
+    serviceAccountName: robot
+    ...
+    # robot serviceaccount token mounted to the pod
+    volumes:
+      - name: robot-token-4brqx
+        secret:
+          defaultMode: 420
+          secretName: robot-token-4brqx
+    ```
+
     OR
 
     `kubectl describe pod/robot -n office`{{execute}}
