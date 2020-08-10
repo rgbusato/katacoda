@@ -1,11 +1,14 @@
 ref= https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/#use-case-2-enable-helm-in-your-cluster
 # Create Namespace
 
-`kubectl create namespace office`{{execute}}
+1. Create Namespace
 
-Output:
+  `kubectl create namespace office`{{execute}}
 
-`namespace/office created`
+  Output:
+
+  `namespace/office created`
+
 
 # Create the user credentials
 
@@ -22,6 +25,12 @@ e is 65537 (0x010001)
 
 `openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=slalom"`{{execute}}
 
+> **Note:** You may see the following error in the output:
+
+```
+Can't load /root/.rnd into RNG
+139912319340992:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
+```
 
 ```
 export CA_LOCATION=/etc/kubernetes/pki
@@ -35,21 +44,23 @@ subject=CN = employee, O = slalom
 Getting CA Private Key
 ```
 
+`mkdir -p /home/employee/.certs/`{{execute}}
+`cp ./employee.* /home/employee/.certs/`{{execute}}
+
 ```
-mkdir -p /home/employee/.certs/
-cp ./employee.* /home/employee/.certs/
 controlplane $ ls -ltr /home/employee/.certs/
 total 12
 -rw------- 1 root root 1675 Aug  9 20:27 employee.key
 -rw-r--r-- 1 root root  911 Aug  9 20:27 employee.csr
 -rw-r--r-- 1 root root 1013 Aug  9 20:27 employee.crt
-```{{copy}}
+```
 
 ```
 kubectl config set-credentials employee --client-certificate=/home/employee/.certs/employee.crt  --client-key=/home/employee/.certs/employee.key
 ```{{execute}}
 
 Output:
+
 `User "employee" set.`
 
 ```
@@ -57,6 +68,7 @@ kubectl config set-context employee-context --cluster=kubernetes --namespace=off
 ```{{execute}}
 
 Output:
+
 `Context "employee-context" created.`
 
 `kubectl --context=employee-context get pods`{{execute}}
@@ -68,6 +80,7 @@ Error from server (Forbidden): pods is forbidden: User "employee" cannot list re
 ```
 
 # Step 3
+
 `cat role-deployment-manager.yaml`{{execute}}
 
 ```
@@ -141,41 +154,8 @@ Error from server (Forbidden): pods is forbidden: User "employee" cannot list re
 
 **Now you have created a user with limited permissions in your cluster.**
 
-To show how we can reuse the Previously create Role called deployment-manager, we will now create a new RoleBinding but this time for a ServiceAccount.
 
-Step 1- Create ServiceAccount
-
-`kubectl create serviceaccount robot --namespace office`{{execute}}
-
-Output:
-
-`serviceaccount/robot created`
-
-`cat rolebinding-robot.yaml`{{execute}}
-```
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  name: robot-binding
-  namespace: office
-subjects:
-- kind: ServiceAccount
-  name: robot
-  apiGroup: ""
-roleRef:
-  kind: Role
-  name: deployment-manager
-  apiGroup: ""
-```
-
-`kubectl create -f rolebinding-robot.yaml`{{execute}}
-
-Output:
-
-```
-rolebinding.rbac.authorization.k8s.io/robot-binding created
-```
-
+-------
 
 # test the pod permissions - end of this SO tread: https://stackoverflow.com/questions/42642170/how-to-run-kubectl-commands-inside-a-container
 
@@ -224,7 +204,7 @@ mydokuwiki   1/1     Running   0          6m27s
 Verify the pod is running with the service account we've created for it:
 `kubectl get pod/robot -n office -o yaml`{{execute}}
 
-
+----
 ```
 ...
 # service account info
@@ -238,26 +218,3 @@ volumes:
       defaultMode: 420
       secretName: robot-token-4brqx
 ```
-
-
-Now we get inside the running container and try to list pods within our namespace. This exercise will make sure that the Pod (using the ServiceAccount we've created for it) can in fact view the running pod within our office namespace.
-
-
-```
-kubectl exec --namespace=office -it robot -- /bin/bash
-I have no name!@my-pod:/$ kubectl get pods -n office
-NAME         READY   STATUS    RESTARTS   AGE
-robot        1/1     Running   0          99s
-mydokuwiki   1/1     Running   0          33m
-```
-OR
-```
-kubectl exec --namespace=office -it robot -- kubectl get pods -n office
-NAME         READY   STATUS    RESTARTS   AGE
-my-pod       1/1     Running   0          2m57s
-mydokuwiki   1/1     Running   0          35m
-```
-
-
-NOTE: why can I still see everything that is in the other namespaces ?
-Seems weird, maybe we forgot to do something here.
