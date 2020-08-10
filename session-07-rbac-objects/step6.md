@@ -19,7 +19,7 @@
    
     If you run the same command with the `--namespace=default` argument, it will fail, as the employee user does not have access to this namespace.
 
-    The following command will fail:
+    The following command **will FAIL**:
 
     `kubectl --context=employee-context get pods --namespace=default`{{execute}}
 

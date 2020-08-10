@@ -1,10 +1,10 @@
 # Create a ServiceAccount
 
-Imagine a situation where an SRE team member called `employee` was manually managing deployments to our cluster for the `office` namespace. 
+Imagine a situation where an SRE team member called `employee` was manually managing deployments to our cluster for the `office` namespace this entire time. 
 
-We finally decided that we would like to automate this process by running a Pod within the cluster that automatically performs deployments within the the `office` namespace.
+We finally decided that we would like to automate this process by running a Pod within the cluster that automatically performs deployments within the `office` namespace.
 
-Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount that our deployment automation Pod will use to communicate with the Kubernetes API and manage our deployments within the namespace.
+Since **Pods use ServiceAccounts**, we need to start by creating a ServiceAccount that our deployment automation Pod will use to communicate with the Kubernetes API and manage our deployments within the `office` namespace.
 
 1. Create a `robot` ServiceAccount:
    
@@ -16,7 +16,7 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
 
 2. Create a new RoleBinding:
     
-    To show how we can reuse the previously create Role called `deployment-manager`, we will now create a new RoleBinding but this time for a ServiceAccount that we have just created above
+    To show how we can **reuse the previously created Role** called `deployment-manager`, we will now create a **new RoleBinding** but this time for a **ServiceAccount** (not a **User**) that we have just created above
 
     `cat rolebinding-robot.yaml`{{execute}}
     
@@ -47,7 +47,7 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
 
 3. Deploy a new Pod using the ServiceAccount:
 
-    Let's create a new Pod that uses our newly created ServiceAccount to run:
+    Let's create a new Pod that uses our newly created **ServiceAccount** to run:
 
     `cat robot-pod.yaml`{{execute}}
 
@@ -65,6 +65,8 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
         command: ['/bin/bash', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
     ```
 
+    > **Note:** the use of `serviceAccountName: robot` in our **Pod** spec above.
+
     `kubectl create -f robot-pod.yaml`{{execute}}
 
     Output:
@@ -76,7 +78,7 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
     mydokuwiki   1/1     Running   0          6m27s
     ```
 
-4. Verify the Pod is running with the service account we've created for it:
+4. Verify the Pod is running with the ServiceAccount we've created for it:
 
     `kubectl get pod/robot -n office -o yaml`{{execute}}
 
@@ -105,6 +107,8 @@ Since Pods use ServiceAccounts, we need to start by creating a ServiceAccount th
     Now we get inside the running container and try to list pods within our namespace. 
     
     This exercise will make sure that the Pod (using the ServiceAccount we've created for it) can in fact view the running pod within our office namespace.
+
+    This is **similar** to the exercise we did earlier with the newly created **User account**. Except that this time we will be doing it with a `robot` **ServiceAccount**
 
     > **Note:** The following command attaches to the existing Pod named `robot` and run `kubectl get pods -n office` within the existing pod. This is how we test our ServiceAccount access.
 

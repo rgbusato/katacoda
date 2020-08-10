@@ -8,5 +8,5 @@ subjects:
   name: robot
 roleRef:
   kind: Role
-  name: deployment-manager
+  name: deployment-manager # we are reusing the previously created Role
   apiGroup: rbac.authorization.k8s.io
