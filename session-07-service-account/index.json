@@ -7,7 +7,6 @@
     "steps": [
       {
         "title": "Step 1",
-        "code": "foreground.sh",
         "text": "step1.md"
       },
       {
@@ -32,7 +31,6 @@
       }
     ],
     "intro": {
-      "courseData": "env-init.sh",
       "text": "intro.md",
       "credits": "https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/"
     },
@@ -42,11 +40,19 @@
     "assets": {
       "host01": [
         {
-          "file": "example-ingress.yaml",
+          "file": "role-deployment-manager.yaml",
           "target": "~/"
         },
         {
-          "file": "example-ingress-2.yaml",
+          "file": "robot-pod.yaml",
+          "target": "~/"
+        },
+        {
+          "file": "rolebinding-deployment-manager.yaml",
+          "target": "~/"
+        },
+        {
+          "file": "rolebinding-robot.yaml",
           "target": "~/"
         }
       ]
@@ -57,6 +63,6 @@
   },
   "backend": {
     "port": 30000,
-    "dockerimage": "minikube-running"
+    "dockerimage": "minikube"
   }
 }
